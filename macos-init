@@ -1,0 +1,132 @@
+1.Install app from list
+Aliwangwang.app                   Postman.app
+BaiduNetdisk_mac.app              QQ.app
+Docker.app                        Safari.app
+Eudb_en_free.app                  Sequel Pro.app
+FileZilla.app                     ShadowsocksX-NG-R8.app                    
+Slack.app
+Google Chrome.app                 TeamViewer.app
+HandShaker.app                    
+Keka.app                          VLC.app
+VirtualBox.app
+Visual Studio Code.app
+MenuMeters.app                    WeChat.app
+Microsoft Excel.app               YoudaoNote.app
+Microsoft OneNote.app             draw.io.app
+Microsoft Outlook.app             
+Microsoft PowerPoint.app          iTerm.app
+Microsoft Remote Desktop Beta.app zoom.us.app
+Microsoft Word.app                微盘.app
+
+
+2.Setup zsh and plugins
+Install brew first
+Install zsh for iterm2
+(https://gist.github.com/kevin-smets/8568070)
+1.install xcode cmd tools
+# xcode-select --install
+
+2.install iterm2 plugin.
+# sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+3.change theme
+# vi ~/.zshrc
+change to the following
+=================
+ZSH_THEME="geoffgarside" 
+=====================
+
+4.Download suitable font and double click to install it.
+https://github.com/powerline/fonts/blob/master/Meslo/Meslo%20LG%20M%20DZ%20Regular%20for%20Powerline.otf?raw=true
+
+5.Apply it for iterm2
+(iTerm -> Preferences -> Profiles -> Text -> Change Font).
+
+6.install brew
+# ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+7.Syntax highlighting
+# brew install zsh-syntax-highlighting
+# echo "source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
+
+8.Change theme config.
+# vi ~/.oh-my-zsh/themes/geoffgarside.zsh-theme
+change to:
+========================
+PROMPT='%{$fg[cyan]%}%n%{$reset_color%}:%{$fg[yellow]%}%c%{$reset_color%}$(git_prompt_info)%(!.#.$) '
+================================================
+
+9.Add clone session function.
+# vi ~/.ssh/config
+Add:
+========================
+host *
+ControlMaster auto
+ControlPath ~/.ssh/master-%r@%h:%p
+================================================
+
+10.install zsh-autosuggestions
+a.Clone this repository to zsh dir.
+# git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+
+b.Add the following to your .zshrc
+# echo "source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
+
+c.Make it effective.
+# source ~/.zshrc
+
+
+3. Check ~/.zshrc
+...
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+export PATH=$PATH:/Users/zhenyu.li/Workspace/opt/apache-maven-3.6.0/bin:/usr/local/opt/mysql-client/bin:/Users/zhenyu.li/Workspace/opt/groovy-2.5.5/bin
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# export AWS_DEFAULT_REGION=ap-southeast-2
+
+# bash-my-aws
+autoload -U +X compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+export PATH="$PATH:$HOME/.bash-my-aws/bin"
+source ~/.bash-my-aws/aliases
+source ~/.bash-my-aws/bash_completion.sh
+
+# kubectl completer
+source <(kubectl completion zsh)
+
+# aws v1
+export PATH="/usr/local/opt/awscli@1/bin:$PATH"
+complete -C '/usr/local/opt/awscli@1/bin/aws_completer' aws
+
+# aws v2
+#export PATH="/usr/local/opt/awscli@2/bin:$PATH"
+#complete -C '/usr/local/opt/awscli@2/bin/aws_completer' aws
+
+# terraform
+#export PATH="/usr/local/opt/terraform@0.13/bin:$PATH"
+export PATH="/usr/local/opt/terraform@0.14/bin:$PATH"
+
+# mysql client
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+-------------------------
+
+
+4.Import iterm global profile
+Profiles.json is in current dir.
+
+
+5. Enable VScode setting sync
+
+
+6. Setup system user profile
+Login iCloud (showerlee@vip.qq.com)
+Keyboard - Shortcut
+Screen saver - hot corners
+Install menumeters
+input method
+Sync backup file
