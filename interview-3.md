@@ -156,26 +156,26 @@ iptables与IPVS都是基于Netfilter实现的，但因为定位不同，二者�
 
 ## 简述Kubernetes中Pod可能位于的状态
 
-Pending：API Server已经创建该Pod，且Pod内还有一个或多个容器的镜像没有创建，包括正在下载镜像的过程。
-Running：Pod内所有容器均已创建，且至少有一个容器处于运行状态、正在启动状态或正在重启状态。
-Succeeded：Pod内所有容器均成功执行退出，且不会重启。
-Failed：Pod内所有容器均已退出，但至少有一个容器退出为失败状态。
-Unknown：由于某种原因无法获取该Pod状态，可能由于网络通信不畅导致。
+- Pending：API Server已经创建该Pod，且Pod内还有一个或多个容器的镜像没有创建，包括正在下载镜像的过程。
+- Running：Pod内所有容器均已创建，且至少有一个容器处于运行状态、正在启动状态或正在重启状态。
+- Succeeded：Pod内所有容器均成功执行退出，且不会重启。
+- Failed：Pod内所有容器均已退出，但至少有一个容器退出为失败状态。
+- Unknown：由于某种原因无法获取该Pod状态，可能由于网络通信不畅导致。
 
 ## 简述Kubernetes创建一个Pod的主要流程
 
 Kubernetes中创建一个Pod涉及多个组件之间联动，主要流程如下：
 
-客户端提交Pod的配置信息（可以是yaml文件定义的信息）到kube-apiserver。
-Apiserver收到指令后，通知给controller-manager创建一个资源对象。
-Controller-manager通过api-server将Pod的配置信息存储到etcd数据中心中。
-Kube-scheduler检测到Pod信息会开始调度预选，会先过滤掉不符合Pod资源配置要求的节点，然后开始调度调优，主要是挑选出更适合运行Pod的节点，然后将Pod的资源配置单发送到Node节点上的kubelet组件上。
-某Node下的Kubelet根据scheduler发来的资源配置单运行Pod，
-Kubelet本身不会创建pod, 它会把这些资源配置信息分派给当前节点的CRI, CNI, CSI 去做Pod的创建运行工作.
-kubelet 调用 GenericRuntime 通用组件来发起创建 Pod 的 CRI 请求
-如果容器项目是 Docker, 负责响应这个CRI请求的就是一个叫作 dockershim 的组件。它会把 CRI 请求里的内容拿出来，然后组装成 Docker API 请求发给 Docker Daemon
-如果是其他容器项目, 负责响应这个CRI请求的就是一个叫作 CRI shim的组件, 他扮演 kubelet 与容器项目之间的“垫片”（shim）, 实现 CRI 规定的每个接口，然后把具体的 CRI 请求“翻译”成对后端容器项目的请求
-运行成功后，kubelet将Pod的运行信息返回给scheduler，scheduler将返回的Pod运行状况的信息存储到etcd数据中心。
+- 客户端提交Pod的配置信息（可以是yaml文件定义的信息）到kube-apiserver。
+- Apiserver收到指令后，通知给controller-manager创建一个资源对象。
+- Controller-manager通过api-server将Pod的配置信息存储到etcd数据中心中。
+- Kube-scheduler检测到Pod信息会开始调度预选，会先过滤掉不符合Pod资源配置要求的节点，然后开始调度调优，主要是挑选出更适合运行Pod的节点，然后将Pod的资源配置单发送到Node节点上的kubelet组件上。
+- 某Node下的Kubelet根据scheduler发来的资源配置单运行Pod，
+- Kubelet本身不会创建pod, 它会把这些资源配置信息分派给当前节点的CRI, CNI, CSI 去做Pod的创建运行工作.
+- kubelet 调用 GenericRuntime 通用组件来发起创建 Pod 的 CRI 请求
+- 如果容器项目是 Docker, 负责响应这个CRI请求的就是一个叫作 dockershim 的组件。它会把 CRI 请求里的内容拿出来，然后组装成 Docker API 请求发给 Docker Daemon
+- 如果是其他容器项目, 负责响应这个CRI请求的就是一个叫作 CRI shim的组件, 他扮演 kubelet 与容器项目之间的“垫片”（shim）, 实现 CRI 规定的每个接口，然后把具体的 CRI 请求“翻译”成对后端容器项目的请求
+- 运行成功后，kubelet将Pod的运行信息返回给scheduler，scheduler将返回的Pod运行状况的信息存储到etcd数据中心。
 
 当 Kubernetes 通过编排能力创建了一个 Pod 之后，调度器会为这个 Pod 选择一个具体的节点来运行。这时候，kubelet 当然就会通过前面讲解过的 SyncLoop 来判断需要执行的具体操作，比如创建一个 Pod。那么此时，kubelet 实际上就会调用一个叫作 GenericRuntime 的通用组件来发起创建 Pod 的 CRI 请求。
 
